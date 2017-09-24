@@ -1,7 +1,9 @@
-import React, { Componenet } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux'; //-> glue between react /redux
+import { selectBook } from '../actions/index';
+import { bindActionCreators } from 'redux';
 
-class BookList extends Componenet {
+class BookList extends Component {
 renderList(){
   return this.props.books.map((book) => {
     return (
@@ -26,4 +28,15 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(BookList);
+// Abything returned from this function will end up as props
+// on the Booklist contaner
+function mapDispatchToProps(dispatch){
+  ////Whenever selectBook is called, the result should be passed
+  // to all of our reducers
+  return bindActionCreators({ selectBook: selectBook}, dispatch);
+}
+
+//Promote BookList from a componenet to a contianer - is needs to know
+// about this new dispatch method, selectBook. Make it available
+// as props .
+export default connect(mapStateToProps, mapDispatchToProps)(BookList);
